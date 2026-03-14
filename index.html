@@ -3,456 +3,820 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💑 Годовщина: Наша история</title>
+    <title>💑 Наша годовщина</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
+            background: #0a0a0f;
+            font-family: 'Georgia', serif;
             min-height: 100vh;
-            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            font-family: 'Playfair Display', 'Georgia', serif;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(255, 215, 215, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .music-btn {
-            position: fixed;
-            top: max(16px, env(safe-area-inset-top));
-            right: max(16px, env(safe-area-inset-right));
-            width: 56px;
-            height: 56px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(255, 215, 215, 0.5);
-            color: #ffb6c1;
-            font-size: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            cursor: pointer;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            padding: 16px;
         }
 
         .wrapper {
             width: 100%;
-            max-width: 480px;
+            max-width: 400px;
             margin: 0 auto;
-            padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom)) 16px;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            z-index: 10;
         }
 
-        .card {
-            width: 100%;
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 64px;
+        /* ОСНОВНАЯ КАРТОЧКА */
+        .memory-book {
+            background: #1a1a24;
+            border-radius: 40px;
             padding: 32px 24px;
-            border: 1px solid rgba(255, 182, 193, 0.3);
-            box-shadow: 0 40px 80px -16px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 182, 193, 0.2) inset;
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,192,203,0.2) inset;
             position: relative;
-            overflow: hidden;
+            border: 1px solid #333344;
         }
 
-        .card::after {
-            content: '💕';
-            position: absolute;
-            bottom: -20px;
-            right: -20px;
-            font-size: 120px;
-            opacity: 0.05;
-            transform: rotate(15deg);
-            pointer-events: none;
+        /* СТРАНИЦЫ (разные форматы) */
+        .page {
+            display: none;
+            min-height: 500px;
         }
 
-        .header {
+        .page.active {
+            display: block;
+            animation: pageTurn 0.6s ease;
+        }
+
+        @keyframes pageTurn {
+            0% { opacity: 0; transform: translateX(30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ======== ФОРМАТ 1: КАЛЕНДАРЬ ======== */
+        .calendar-cover {
             text-align: center;
-            margin-bottom: 32px;
-            position: relative;
+            margin-bottom: 30px;
         }
 
-        .greeting {
-            font-size: clamp(1.3rem, 5vw, 1.8rem);
+        .calendar-year {
+            font-size: 6rem;
             color: #ffb6c1;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 300;
-            text-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
-        }
-
-        .holiday-name {
-            font-size: clamp(2.2rem, 8vw, 3.2rem);
-            color: #fff;
             font-weight: 900;
-            margin-top: 8px;
-            text-shadow: 3px 3px 0 #ff69b4, 6px 6px 0 rgba(0, 0, 0, 0.2);
-            letter-spacing: 2px;
+            line-height: 1;
+            text-shadow: 4px 4px 0 #ff69b4;
         }
 
-        .divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ffb6c1, #ff69b4, #ffb6c1, transparent);
-            width: 80%;
-            margin: 24px auto;
+        .calendar-sub {
+            color: #888;
+            letter-spacing: 4px;
+            margin-top: 10px;
         }
 
-        .menu-grid {
+        .calendar-hearts {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 40px 0;
+            font-size: 2rem;
+        }
+
+        .calendar-memory {
+            background: #22222e;
+            border-radius: 30px;
+            padding: 25px;
+            text-align: center;
+            border-left: 4px solid #ff69b4;
+        }
+
+        .calendar-date {
+            color: #ffb6c1;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        /* ======== ФОРМАТ 2: ПИСЬМО ======== */
+        .envelope {
+            position: relative;
+            background: #2a2a36;
+            border-radius: 30px 30px 30px 10px;
+            padding: 40px 25px;
+            margin-bottom: 20px;
+        }
+
+        .envelope::before {
+            content: '💌';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+        }
+
+        .letter-line {
+            color: #ddd;
+            font-size: 1.2rem;
+            line-height: 2;
+            margin: 25px 0;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .letter-sign {
+            text-align: right;
+            color: #ffb6c1;
+            font-size: 1.4rem;
+            margin-top: 30px;
+        }
+
+        /* ======== ФОРМАТ 3: ФОТОАЛЬБОМ ======== */
+        .photo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             margin: 20px 0;
         }
 
-        .menu-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 182, 193, 0.2);
-            border-radius: 40px;
-            padding: 24px 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-        }
-
-        .menu-card:hover {
-            background: rgba(255, 182, 193, 0.1);
-            border-color: rgba(255, 105, 180, 0.4);
-            transform: translateY(-8px) scale(1.02);
-        }
-
-        .menu-emoji {
-            font-size: 3.5rem;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 0 15px #ff69b4);
-        }
-
-        .menu-title {
-            color: #ffb6c1;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .menu-desc {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        .story-container {
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .memory-page {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 48px;
-            padding: 32px 24px;
-            border: 1px solid rgba(255, 182, 193, 0.2);
-            box-shadow: 0 20px 40px -16px rgba(0, 0, 0, 0.4);
-        }
-
-        .memory-date {
-            color: #ffb6c1;
-            font-size: 1.2rem;
-            text-align: center;
-            margin-bottom: 24px;
-            letter-spacing: 2px;
-        }
-
-        .memory-photo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 24px;
-            background: linear-gradient(145deg, #ffb6c1, #ff69b4);
-            border-radius: 60px 60px 60px 20px;
+        .photo {
+            background: #2a2a36;
+            border-radius: 30px;
+            aspect-ratio: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-            transform: rotate(-5deg);
-            box-shadow: 0 20px 40px -8px rgba(255, 105, 180, 0.4);
-        }
-
-        .memory-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.3rem;
-            line-height: 1.8;
-            text-align: center;
-            font-style: italic;
-            margin-bottom: 32px;
-        }
-
-        .timeline {
-            position: relative;
-            padding: 20px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, transparent, #ffb6c1, #ff69b4, #ffb6c1, transparent);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 60px;
-            margin-bottom: 40px;
-            cursor: pointer;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 12px;
-            top: 0;
-            width: 16px;
-            height: 16px;
-            background: #ff69b4;
-            border-radius: 50%;
-            box-shadow: 0 0 25px #ff69b4;
-        }
-
-        .timeline-year {
-            color: #ffb6c1;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .timeline-event {
-            color: white;
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-
-        .timeline-desc {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1rem;
-            margin-top: 6px;
-        }
-
-        .love-letter {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 48px 48px 48px 24px;
-            padding: 40px 24px;
-            position: relative;
-        }
-
-        .love-letter::before {
-            content: '💌';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
             font-size: 3rem;
-            filter: drop-shadow(0 5px 10px #ff69b4);
+            border: 2px solid #ffb6c1;
         }
 
-        .letter-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2rem;
-            line-height: 1.9;
-            text-align: center;
-            margin: 30px 0;
-            font-style: italic;
-        }
-
-        .letter-signature {
-            color: #ffb6c1;
-            text-align: right;
-            font-size: 1.3rem;
-            font-family: 'Dancing Script', cursive;
-        }
-
-        .question-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 48px;
-            padding: 32px 24px;
-        }
-
-        .question-text {
-            color: white;
-            font-size: 1.6rem;
-            text-align: center;
-            margin-bottom: 32px;
-            line-height: 1.5;
-        }
-
-        .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .option-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 182, 193, 0.3);
-            border-radius: 100px;
-            padding: 18px 24px;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .option-btn:hover {
-            background: rgba(255, 105, 180, 0.2);
-            border-color: #ff69b4;
-            transform: translateX(10px);
-        }
-
-        .countdown-box {
-            background: linear-gradient(145deg, #ffb6c1, #ff69b4);
-            border-radius: 40px;
-            padding: 40px 24px;
-            text-align: center;
-        }
-
-        .countdown-number {
-            font-size: 5rem;
-            color: white;
-            font-weight: 900;
-            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
-            line-height: 1;
-        }
-
-        .countdown-label {
-            color: white;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-top: 16px;
-        }
-
-        .progress-ring {
-            width: 200px;
-            height: 200px;
-            margin: 30px auto;
-            position: relative;
-        }
-
-        .ring-percent {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: white;
-            font-weight: 900;
-            text-shadow: 0 0 30px #ff69b4;
-        }
-
-        .couple-name {
-            font-size: 2rem;
+        .photo-caption {
             color: white;
             text-align: center;
-            margin: 20px 0;
-            font-weight: 700;
+            margin-top: 8px;
+            font-size: 0.9rem;
         }
 
-        .action-button {
-            width: 100%;
-            background: rgba(255, 105, 180, 0.2);
-            border: 2px solid #ff69b4;
-            border-radius: 60px;
-            padding: 18px;
-            color: white;
-            font-size: 1.3rem;
-            margin: 12px 0;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-        }
-
-        .action-button:hover {
-            background: #ff69b4;
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px -5px #ff69b4;
-        }
-
-        .final-result {
-            text-align: center;
-            color: white;
-            animation: fadeInPage 0.8s;
-        }
-
-        @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .final-emoji {
-            font-size: 6rem;
-            margin: 20px 0;
-            filter: drop-shadow(0 0 40px #ff69b4);
-        }
-
-        .final-title {
-            font-size: 2.8rem;
-            font-weight: 900;
-            margin: 20px 0;
-            color: #ffb6c1;
-            text-shadow: 2px 2px 0 #ff69b4;
-        }
-
-        .final-desc {
-            font-size: 1.3rem;
-            line-height: 1.7;
-            margin: 25px 0;
-            color: rgba(255, 255, 255, 0.9);
-            background: rgba(255, 255, 255, 0.05);
+        /* ======== ФОРМАТ 4: ПЛЕЙЛИСТ ======== */
+        .playlist {
+            background: #22222e;
             border-radius: 40px;
             padding: 25px;
         }
 
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .song {
+            display: flex;
+            align-items: center;
             gap: 15px;
-            margin: 25px 0;
+            padding: 15px 0;
+            border-bottom: 1px solid #333344;
         }
 
-        .stat-item {
-            background: rgba(255, 105, 180, 0.1);
-            border: 1px solid rgba(255, 182, 193, 0.3);
-            border-radius: 30px;
-            padding: 20px 10px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
+        .song-num {
             color: #ffb6c1;
+            font-size: 1.3rem;
             font-weight: 900;
         }
 
-        .stat-label {
+        .song-name {
             color: white;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
+            flex: 1;
+        }
+
+        .song-heart {
+            color: #ff69b4;
+            font-size: 1.3rem;
+        }
+
+        /* ======== ФОРМАТ 5: КАРТА ======== */
+        .map {
+            background: #1e2a3a;
+            border-radius: 40px;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .map-dot {
+            width: 20px;
+            height: 20px;
+            background: #ff69b4;
+            border-radius: 50%;
+            margin: 20px auto;
+            box-shadow: 0 0 30px #ff69b4;
+        }
+
+        .map-place {
+            color: white;
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        .map-date {
+            color: #888;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .map-line {
+            height: 60px;
+            width: 2px;
+            background: linear-gradient(to bottom, #ffb6c1, #ff69b4);
+            margin: 15px auto;
+        }
+
+        /* ======== ФОРМАТ 6: КОЛОДА КАРТ ======== */
+        .card-stack {
+            perspective: 1000px;
+            min-height: 300px;
+        }
+
+        .card-item {
+            background: linear-gradient(145deg, #2a2a36, #1a1a24);
+            border: 2px solid #ffb6c1;
+            border-radius: 30px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card-item:hover {
+            transform: translateY(-10px) rotate(2deg);
+        }
+
+        .card-value {
+            font-size: 4rem;
+            color: #ffb6c1;
+        }
+
+        .card-suit {
+            font-size: 2rem;
+        }
+
+        /* ======== ФОРМАТ 7: КОНВЕРТ С СЕКРЕТОМ ======== */
+        .secret-box {
+            background: #22222e;
+            border-radius: 30px;
+            padding: 30px;
+            border: 2px dashed #ff69b4;
+            text-align: center;
+        }
+
+        .secret-question {
+            color: #ffb6c1;
+            font-size: 1.4rem;
+            margin: 20px 0;
+        }
+
+        .secret-input {
+            width: 100%;
+            padding: 18px;
+            background: #1a1a24;
+            border: 2px solid #ff69b4;
+            border-radius: 60px;
+            color: white;
+            font-size: 1.1rem;
+            margin: 15px 0;
+        }
+
+        /* ======== ФОРМАТ 8: КАЛЕЙДОСКОП ======== */
+        .kaleidoscope {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .kaleido-piece {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(145deg, #ffb6c1, #ff69b4);
+            border-radius: 30px 30px 10px 30px;
+            transform: rotate(var(--rot));
+            animation: float 3s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: rotate(var(--rot)) translateY(0); }
+            50% { transform: rotate(var(--rot)) translateY(-10px); }
+        }
+
+        /* ======== ФОРМАТ 9: ОРАКУЛ ======== */
+        .oracle-ball {
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+            background: radial-gradient(circle at 30% 30%, #ffb6c1, #8a2be2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 60px #ff69b4;
+        }
+
+        .oracle-ball:active {
+            transform: scale(0.95);
+        }
+
+        /* ======== ФОРМАТ 10: МАШИНА ВРЕМЕНИ ======== */
+        .time-machine {
+            background: #1a2a3a;
+            border-radius: 60px 60px 30px 30px;
+            padding: 40px 20px;
+            border: 2px solid #4a6b8a;
+        }
+
+        .time-display {
+            font-size: 4rem;
+            color: #4af;
+            font-family: monospace;
+            text-align: center;
+            text-shadow: 0 0 20px #4af;
+        }
+
+        .time-label {
+            color: #89f;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        /* ОБЩИЕ ЭЛЕМЕНТЫ */
+        .title {
+            color: #ffb6c1;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #888;
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .button {
+            background: rgba(255, 182, 193, 0.1);
+            border: 2px solid #ff69b4;
+            border-radius: 60px;
+            padding: 18px;
+            color: white;
+            font-size: 1.2rem;
+            width: 100%;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background: #ff69b4;
+        }
+
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #333344;
+            cursor: pointer;
+        }
+
+        .nav-dot.active {
+            background: #ff69b4;
+            box-shadow: 0 0 20px #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="memory-book">
+            <!-- СТРАНИЦА 1: КАЛЕНДАРЬ -->
+            <div class="page active" id="page1">
+                <div class="calendar-cover">
+                    <div class="calendar-year">♥</div>
+                    <div class="calendar-sub">наша история</div>
+                </div>
+                
+                <div class="calendar-hearts">
+                    <span>💕</span>
+                    <span>💕</span>
+                    <span>💕</span>
+                </div>
+
+                <div class="calendar-memory">
+                    <div class="calendar-date">14 февраля 2020</div>
+                    <div style="color: white; font-size: 1.3rem;">Мы встретились</div>
+                    <div style="color: #888; margin-top: 15px;">тот самый день</div>
+                </div>
+
+                <div class="calendar-memory" style="margin-top: 15px;">
+                    <div class="calendar-date">8 июля 2022</div>
+                    <div style="color: white; font-size: 1.3rem;">Свадьба</div>
+                    <div style="color: #888; margin-top: 15px;">сказали "да"</div>
+                </div>
+
+                <button class="button" onclick="nextPage(1)">листать дальше →</button>
+            </div>
+
+            <!-- СТРАНИЦА 2: ПИСЬМО -->
+            <div class="page" id="page2">
+                <div class="envelope">
+                    <div class="letter-line">
+                        "Я помню, как впервые увидел тебя. Ты смеялась, и мне показалось, что мир стал ярче."
+                    </div>
+                    <div class="letter-line">
+                        "С тех пор каждый день с тобой — как подарок."
+                    </div>
+                    <div class="letter-sign">
+                        Твой любимый человек
+                    </div>
+                </div>
+
+                <div style="text-align: center; color: #ffb6c1; margin: 20px 0;">
+                    💌 ПИСЬМО ДЛЯ ТЕБЯ 💌
+                </div>
+
+                <button class="button" onclick="nextPage(2)">→</button>
+            </div>
+
+            <!-- СТРАНИЦА 3: ФОТОАЛЬБОМ -->
+            <div class="page" id="page3">
+                <div class="title">📸 наш альбом</div>
+                
+                <div class="photo-grid">
+                    <div>
+                        <div class="photo">🏖️</div>
+                        <div class="photo-caption">первый отпуск</div>
+                    </div>
+                    <div>
+                        <div class="photo">🎂</div>
+                        <div class="photo-caption">день рождения</div>
+                    </div>
+                    <div>
+                        <div class="photo">💍</div>
+                        <div class="photo-caption">помолвка</div>
+                    </div>
+                    <div>
+                        <div class="photo">🏠</div>
+                        <div class="photo-caption">наш дом</div>
+                    </div>
+                </div>
+
+                <button class="button" onclick="nextPage(3)">→</button>
+            </div>
+
+            <!-- СТРАНИЦА 4: ПЛЕЙЛИСТ -->
+            <div class="page" id="page4">
+                <div class="title">🎵 наш плейлист</div>
+                
+                <div class="playlist">
+                    <div class="song">
+                        <span class="song-num">01</span>
+                        <span class="song-name">Твои глаза</span>
+                        <span class="song-heart">❤️</span>
+                    </div>
+                    <div class="song">
+                        <span class="song-num">02</span>
+                        <span class="song-name">Навсегда</span>
+                        <span class="song-heart">❤️</span>
+                    </div>
+                    <div class="song">
+                        <span class="song-num">03</span>
+                        <span class="song-name">Я тебя люблю</span>
+                        <span class="song-heart">❤️</span>
+                    </div>
+                    <div class="song">
+                        <span class="song-num">04</span>
+                        <span class="song-name">Мы будем вместе</span>
+                        <span class="song-heart">❤️</span>
+                    </div>
+                </div>
+
+                <button class="button" onclick="nextPage(4)">→</button>
+            </div>
+
+            <!-- СТРАНИЦА 5: КАРТА -->
+            <div class="page" id="page5">
+                <div class="title">🗺️ места, где мы были</div>
+                
+                <div class="map">
+                    <div class="map-place">Москва</div>
+                    <div class="map-date">2019</div>
+                    <div class="map-dot"></div>
+                    
+                    <div class="map-line"></div>
+                    
+                    <div class="map-place">Санкт-Петербург</div>
+                    <div class="map-date">2020</div>
+                    <div class="map-dot"></div>
+                    
+                    <div class="map-line"></div>
+                    
+                    <div class="map-place">Сочи</div>
+                    <div class="map-date">2021</div>
+                    <div class="map-dot"></div>
+                    
+                    <div class="map-line"></div>
+                    
+                    <div class="map-place">Крым</div>
+                    <div class="map-date">2022</div>
+                    <div class="map-dot"></div>
+                </div>
+
+                <button class="button" onclick="nextPage(5)">→</button>
+            </div>
+
+            <!-- СТРАНИЦА 6: КАРТЫ -->
+            <div class="page" id="page6">
+                <div class="title">🎴 карта судьбы</div>
+                
+                <div class="card-stack">
+                    <div class="card-item" onclick="revealCard(this)">
+                        <div class="card-value">?</div>
+                        <div class="card-suit">♥</div>
+                        <div style="color: white; margin-top: 10px;">нажми, чтобы узнать</div>
+                    </div>
+                </div>
+
+                <button class="button" onclick="nextPage(6)">→</button>
+            </div>
+
+            <!-- СТРАНИЦА 7: СЕКРЕТ -->
+            <div class="page" id="page7">
+                <div class="title">🤫 секрет</div>
+                
+                <div class="secret-box">
+                    <div class="secret-question">Что я люблю в тебе больше всего?</div>
+                    <input class="secret-input" placeholder="напиши..." id="secretAnswer">
+                    <button class="button" onclick="checkSecret()">узнать</button>
+                </div>
+
+                <button class="button" onclick="nextPage(7)">→</button>
+            </div>
+
+            <!-- СТРАНИЦА 8: КАЛЕЙДОСКОП -->
+            <div class="page" id="page8">
+                <div class="title">🌈 калейдоскоп чувств</div>
+                
+                <div class="kaleidoscope" id="kaleidoscope">
+                    <!-- генерируется js -->
+                </div>
+
+                <div style="color: white; text-align: center; margin: 20px;">
+                    каждый кусочек — это момент счастья
+                </div>
+
+                <button class="button" onclick="nextPage(8)">→</button>
+            </div>
+
+            <!-- СТРАНИЦА 9: ОРАКУЛ -->
+            <div class="page" id="page9">
+                <div class="title">🔮 что ждёт нас?</div>
+                
+                <div class="oracle-ball" id="oracle" onclick="shakeOracle()">
+                    ?
+                </div>
+
+                <div id="oracleAnswer" style="color: white; text-align: center; margin: 20px; min-height: 60px;">
+                    нажми на шар
+                </div>
+
+                <button class="button" onclick="nextPage(9)">→</button>
+            </div>
+
+            <!-- СТРАНИЦА 10: МАШИНА ВРЕМЕНИ -->
+            <div class="page" id="page10">
+                <div class="title">⏰ машина времени</div>
+                
+                <div class="time-machine">
+                    <div class="time-display" id="timeDisplay">2024</div>
+                    <div class="time-label">сейчас</div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 30px;">
+                        <button class="button" style="flex: 1;" onclick="timeTravel(-1)">← прошлое</button>
+                        <button class="button" style="flex: 1;" onclick="timeTravel(1)">будущее →</button>
+                    </div>
+                    
+                    <div id="timeMessage" style="color: #ffb6c1; text-align: center; margin-top: 25px;">
+                        2024: мы счастливы вместе
+                    </div>
+                </div>
+
+                <button class="button" onclick="nextPage(10)">сначала →</button>
+            </div>
+
+            <!-- ТОЧКИ НАВИГАЦИИ -->
+            <div class="nav-dots">
+                <span class="nav-dot active" onclick="goToPage(1)"></span>
+                <span class="nav-dot" onclick="goToPage(2)"></span>
+                <span class="nav-dot" onclick="goToPage(3)"></span>
+                <span class="nav-dot" onclick="goToPage(4)"></span>
+                <span class="nav-dot" onclick="goToPage(5)"></span>
+                <span class="nav-dot" onclick="goToPage(6)"></span>
+                <span class="nav-dot" onclick="goToPage(7)"></span>
+                <span class="nav-dot" onclick="goToPage(8)"></span>
+                <span class="nav-dot" onclick="goToPage(9)"></span>
+                <span class="nav-dot" onclick="goToPage(10)"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+
+        function nextPage(fromPage) {
+            if (fromPage < 10) {
+                goToPage(fromPage + 1);
+            } else {
+                goToPage(1);
+            }
+        }
+
+        function goToPage(pageNum) {
+            // скрываем все страницы
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`page${i}`).classList.remove('active');
+            }
+            // показываем нужную
+            document.getElementById(`page${pageNum}`).classList.add('active');
+            
+            // обновляем точки
+            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                if (index + 1 === pageNum) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            currentPage = pageNum;
+
+            // спецэффекты для некоторых страниц
+            if (pageNum === 8) initKaleidoscope();
+            if (pageNum === 6) initCards();
+        }
+
+        // СТРАНИЦА 6: КАРТЫ
+        function initCards() {
+            let card = document.querySelector('.card-item');
+            if (card) {
+                card.innerHTML = `
+                    <div class="card-value">?</div>
+                    <div class="card-suit">♥</div>
+                    <div style="color: white; margin-top: 10px;">нажми, чтобы узнать</div>
+                `;
+            }
+        }
+
+        function revealCard(card) {
+            let values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'В', 'Д', 'К', 'Т'];
+            let suits = ['♥', '♦', '♣', '♠'];
+            let randomValue = values[Math.floor(Math.random() * values.length)];
+            let randomSuit = suits[Math.floor(Math.random() * suits.length)];
+            
+            card.innerHTML = `
+                <div class="card-value">${randomValue}</div>
+                <div class="card-suit">${randomSuit}</div>
+                <div style="color: white; margin-top: 10px;">твоя карта</div>
+            `;
+        }
+
+        // СТРАНИЦА 7: СЕКРЕТ
+        function checkSecret() {
+            let answer = document.getElementById('secretAnswer').value;
+            let secretBox = document.querySelector('.secret-box');
+            
+            if (answer.toLowerCase().includes('всё') || answer.toLowerCase().includes('все')) {
+                secretBox.innerHTML = `
+                    <div style="color: #ff69b4; font-size: 2rem; margin: 20px;">❤️</div>
+                    <div style="color: white; font-size: 1.3rem;">правильно! я люблю в тебе ВСЁ</div>
+                `;
+            } else {
+                secretBox.innerHTML = `
+                    <div style="color: #ffb6c1; font-size: 2rem;">💕</div>
+                    <div style="color: white; margin: 20px;">а вот и нет! я люблю в тебе всё :)</div>
+                `;
+            }
+        }
+
+        // СТРАНИЦА 8: КАЛЕЙДОСКОП
+        function initKaleidoscope() {
+            let container = document.getElementById('kaleidoscope');
+            let html = '';
+            let colors = ['#ffb6c1', '#ff69b4', '#ff1493', '#ff85b3', '#ffa5c3'];
+            
+            for (let i = 0; i < 12; i++) {
+                let rot = Math.random() * 30 - 15;
+                let color = colors[Math.floor(Math.random() * colors.length)];
+                html += `<div class="kaleido-piece" style="--rot: ${rot}deg; background: ${color};"></div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        // СТРАНИЦА 9: ОРАКУЛ
+        function shakeOracle() {
+            let answers = [
+                "будете вместе вечно",
+                "ждёт большое путешествие",
+                "скоро пополнение в семье",
+                "ещё много счастливых лет",
+                "исполнение мечты",
+                "новый дом",
+                "море радости",
+                "любовь станет ещё сильнее"
+            ];
+            
+            let random = answers[Math.floor(Math.random() * answers.length)];
+            document.getElementById('oracleAnswer').innerHTML = `✨ ${random} ✨`;
+            
+            let ball = document.getElementById('oracle');
+            ball.style.transform = 'scale(0.9) rotate(10deg)';
+            setTimeout(() => {
+                ball.style.transform = 'scale(1) rotate(0deg)';
+            }, 200);
+        }
+
+        // СТРАНИЦА 10: МАШИНА ВРЕМЕНИ
+        let currentYear = 2024;
+        let timeMessages = {
+            2019: "мы встретились",
+            2020: "первый год вместе",
+            2021: "стали ближе",
+            2022: "свадьба",
+            2023: "медовый месяц",
+            2024: "мы счастливы вместе",
+            2025: "ждёт путешествие",
+            2026: "новые мечты",
+            2027: "ещё сильнее любим друг друга",
+            2028: "всё только начинается",
+            2029: "навсегда"
+        };
+
+        function timeTravel(direction) {
+            currentYear += direction;
+            if (currentYear < 2019) currentYear = 2019;
+            if (currentYear > 2029) currentYear = 2029;
+            
+            document.getElementById('timeDisplay').textContent = currentYear;
+            
+            let message = timeMessages[currentYear] || `мы вместе уже ${currentYear - 2019} лет`;
+            document.getElementById('timeMessage').textContent = `${currentYear}: ${message}`;
+        }
+
+        // музыка (опционально)
+        let music = new Audio();
+        music.loop = true;
+        music.volume = 0.2;
+        
+        // можно добавить кнопку музыки
+        let musicBtn = document.createElement('div');
+        musicBtn.innerHTML = '🎵';
+        musicBtn.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,182,193,0.2);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 2px solid #ffb6c1;
+        `;
+        document.body.appendChild(musicBtn);
+        
+        let musicPlaying = false;
+        musicBtn.onclick = () => {
+            if (musicPlaying) {
+                music.pause();
+                musicBtn.style.opacity = '0.5';
+            } else {
+                music.play().catch(() => {});
+                musicBtn.style.opacity = '1';
+            }
+            musicPlaying = !musicPlaying;
+        };
+
+        // старт
+        goToPage(1);
+    </script>
+</body>
+</html>
